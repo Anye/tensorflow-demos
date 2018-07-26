@@ -125,6 +125,7 @@ def train():
     with tf.Session() as sess:
 
         tf.global_variables_initializer().run()
+        saver.restore(sess, tf.train.latest_checkpoint('.')) # 持续训练
         acc = 0.0
         i = 0
 
