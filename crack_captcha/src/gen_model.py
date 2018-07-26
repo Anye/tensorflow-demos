@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os.path
 import tensorflow as tf
 import numpy as np
 from gen_image import text_to_array
@@ -43,7 +44,7 @@ def gen_next_batch(batch_size=100):
     batch_x = np.zeros([batch_size, IMAGE_HEIGHT * IMAGE_WIDTH])
     batch_y = np.zeros([batch_size, MAX_CAPTCHA * CHAR_SET_LEN])
 
-    for i in xrange(batch_size):
+    for i in range(batch_size):
         text, image = gen_require_captcha_image()
 
         # 转成灰度图片，因为颜色对于提取字符形状是没有意义的
@@ -125,7 +126,8 @@ def train():
     with tf.Session() as sess:
 
         tf.global_variables_initializer().run()
-        saver.restore(sess, tf.train.latest_checkpoint('.')) # 持续训练
+        if os.path.exists('checkpoint'):
+            saver.restore(sess, tf.train.latest_checkpoint('.')) # 持续训练
         acc = 0.0
         i = 0
 
